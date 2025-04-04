@@ -1,0 +1,16 @@
+# Environment variables
+.env
+
+# Firebase service account key
+serviceAccountKey.json
+
+# Node modules
+node_modules/
+
+# Logs
+*.log
+
+# Build output (if any)
+dist/
+
+encode.js
