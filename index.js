@@ -29,6 +29,7 @@ app.post("/api/login", (req, res) => {
   }
 });
 
+
 app.get("/api/posts", async (req, res) => {
   try {
     const snapshot = await db.collection("posts").get();
@@ -38,7 +39,6 @@ app.get("/api/posts", async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
-
 app.post("/api/posts", upload.single("image"), async (req, res) => {
   /* ... existing code ... */
 });
