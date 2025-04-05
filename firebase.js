@@ -8,7 +8,7 @@ const serviceAccount = JSON.parse(
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
-  storageBucket: "your-project-id.appspot.com", // Replace with your actual bucket
+  storageBucket: "gs://cryptomuku-72a9f.firebasestorage.app", // Replace with your actual bucket
 });
 
 const db = admin.firestore();
