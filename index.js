@@ -8,11 +8,7 @@ dotenv.config();
 const app = express();
 
 // CORS configuration
-app.use(cors({
-  origin: "https://muku-frontend.vercel.app", // Remove trailing slash
-  methods: ["GET", "POST", "DELETE"],
-  allowedHeaders: ["Content-Type"],
-}));
+app.use(cors());
 
 app.use(express.json());
 
@@ -46,7 +42,9 @@ app.post("/api/posts", upload.single("image"), async (req, res) => {
 app.delete("/api/posts/:id", async (req, res) => {
   /* ... existing code ... */
 });
-
+app.get("/health", (req, res) => {
+  res.status(200).json({ status: "ok" });
+});
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
