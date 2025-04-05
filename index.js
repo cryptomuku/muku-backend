@@ -8,7 +8,11 @@ dotenv.config();
 const app = express();
 
 // CORS configuration
-app.use(cors());
+app.use(cors({
+  origin: "https://muku-frontend.vercel.app", // Remove trailing slash
+  methods: ["GET", "POST", "DELETE"],
+  allowedHeaders: ["Content-Type"],
+}));
 
 app.use(express.json());
 
