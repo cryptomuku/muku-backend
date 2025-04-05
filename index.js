@@ -75,6 +75,38 @@ app.delete("/api/posts/:id", async (req, res) => {
   }
 });
 
+app.put("/api/posts/:id", upload.single("image"), async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { title, paragraph, link } = req.body;
+    let imageUrl = "";
+
+    if (req.file) {
+      const fileName = `${Date.now()}-${req.file.originalname}`;
+      console.log("Uploading image for update:", fileName);
+      const fileRef = storage.bucket().file(`images/${fileName}`);
+      await fileRef.save(req.file.buffer, { contentType: req.file.mimetype });
+      imageUrl = await fileRef.getSignedUrl({ action: "read", expires: "03-09-2491" });
+      imageUrl = imageUrl[0];
+    }
+
+    // Create postData object and filter out undefined values
+    const postData = {};
+    if (title !== undefined) postData.title = title;
+    if (paragraph !== undefined) postData.paragraph = paragraph;
+    if (link !== undefined) postData.link = link;
+    if (imageUrl) postData.image = imageUrl; // Only include image if it exists
+
+    console.log("Updating post with ID:", id, postData);
+    await db.collection("posts").doc(id).set(postData, { merge: true });
+    console.log("Post updated successfully:", id);
+    res.status(200).json({ id, ...postData });
+  } catch (error) {
+    console.error("Error in /api/posts PUT:", error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
 // Use the PORT environment variable provided by Render
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
